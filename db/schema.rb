@@ -10,10 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_20_235024) do
+ActiveRecord::Schema.define(version: 2018_10_21_000320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "coin_users", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "coin_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["coin_id"], name: "index_coin_users_on_coin_id"
+    t.index ["user_id"], name: "index_coin_users_on_user_id"
+  end
+
+  create_table "coins", force: :cascade do |t|
+    t.string "name"
+    t.string "code"
+    t.decimal "price"
+    t.decimal "change24hr"
+    t.decimal "volume24hr"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
@@ -23,4 +42,6 @@ ActiveRecord::Schema.define(version: 2018_10_20_235024) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "coin_users", "coins"
+  add_foreign_key "coin_users", "users"
 end
